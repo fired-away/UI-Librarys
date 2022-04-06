@@ -2392,6 +2392,14 @@ function library:Init()
 		BackgroundTransparency = 1,
 		Parent = self.main
 	})
+	self.cursor = self:Create("Triangle", {
+		Color = Color3.fromRGB(180, 180, 180),
+		Transparency = 0.6,
+	})
+	self.cursor1 = self:Create("Triangle", {
+		Color = Color3.fromRGB(240, 240, 240),
+		Transparency = 0.6,
+	})
 	self.tooltip = self:Create("TextLabel", {
 		ZIndex = 2,
 		BackgroundTransparency = 1,
