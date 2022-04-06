@@ -2390,14 +2390,6 @@ function library:Init()
 		BackgroundTransparency = 1,
 		Parent = self.main
 	})
-	self.cursor = self:Create("Triangle", {
-		Color = Color3.fromRGB(180, 180, 180),
-		Transparency = 0.6,
-	})
-	self.cursor1 = self:Create("Triangle", {
-		Color = Color3.fromRGB(240, 240, 240),
-		Transparency = 0.6,
-	})
 	self.tooltip = self:Create("TextLabel", {
 		ZIndex = 2,
 		BackgroundTransparency = 1,
@@ -2508,16 +2500,6 @@ function library:Init()
 	self:AddConnection(inputService.InputChanged, function(input)
 		if self.open then
 			if input.UserInputType.Name == "MouseMovement" then
-				if self.cursor then
-					local mouse = inputService:GetMouseLocation()
-					local MousePos = Vector2.new(mouse.X, mouse.Y)
-					self.cursor.PointA = MousePos
-					self.cursor.PointB = MousePos + Vector2.new(12, 12)
-					self.cursor.PointC = MousePos + Vector2.new(12, 12)
-					self.cursor1.PointA = MousePos
-					self.cursor1.PointB = MousePos + Vector2.new(11, 11)
-					self.cursor1.PointC = MousePos + Vector2.new(11, 11)
-				end
 				if self.slider then
 					self.slider:SetValue(self.slider.min + ((input.Position.X - self.slider.slider.AbsolutePosition.X) / self.slider.slider.AbsoluteSize.X) * (self.slider.max - self.slider.min))
 				end
