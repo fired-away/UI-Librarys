@@ -2562,3 +2562,5 @@ function library:Init()
 		end)
 	end
 end
+
+return library
