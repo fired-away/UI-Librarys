@@ -79,7 +79,7 @@ function library:Create(class, properties)
 	if not class then
 		return
 	end
-	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle" or class == "Triangle"
+	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle" or class == "Triangle" or class == "Image"
 	local t = a and Drawing or Instance
 	local inst = t.new(class)
 	for property, value in next, properties do
@@ -2392,11 +2392,13 @@ function library:Init()
 		BackgroundTransparency = 1,
 		Parent = self.main
 	})
-	self.cursor = self:Create("Triangle", {
+	self.cursor = self:Create("Image", {
+		Data = game:HttpGet("https://t0.rbxcdn.com/42f66da98c40252ee151326a82aab51f")
 		Color = Color3.fromRGB(180, 180, 180),
 		Transparency = 0.6,
 	})
-	self.cursor1 = self:Create("Triangle", {
+	self.cursor1 = self:Create("Image", {
+		Data = game:HttpGet("https://t0.rbxcdn.com/42f66da98c40252ee151326a82aab51f")
 		Color = Color3.fromRGB(240, 240, 240),
 		Transparency = 0.6,
 	})
