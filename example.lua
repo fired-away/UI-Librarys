@@ -17,7 +17,7 @@ local library = {
 	tabs = {},
 	draggable = true,
 	flags = {},
-	title = "aim.ware",
+	title = "stizzardhook",
 	open = false,
 	mousestate = inputService.MouseIconEnabled,
 	popup = nil,
@@ -27,7 +27,7 @@ local library = {
 	notifications = {},
 	tabSize = 0,
 	theme = {},
-	foldername = "aimware",
+	foldername = "stizzardhook",
 	fileext = ".ch"
 }
 
@@ -300,8 +300,7 @@ local function createToggle(option, parent)
 			Position = UDim2.new(0, 6, 0, 4),
 			Size = UDim2.new(0, 12, 0, 12),
 			BackgroundTransparency = 1,
-			
-				= "rbxassetid://3570695787",
+			Image = "rbxassetid://3570695787",
 			ImageColor3 = Color3.new(),
 			Parent = option.main
 		})
@@ -2391,6 +2390,14 @@ function library:Init()
 		BackgroundTransparency = 1,
 		Parent = self.main
 	})
+	self.cursor = self:Create("Triangle", {
+		Color = Color3.fromRGB(180, 180, 180),
+		Transparency = 0.6,
+	})
+	self.cursor1 = self:Create("Triangle", {
+		Color = Color3.fromRGB(240, 240, 240),
+		Transparency = 0.6,
+	})
 	self.tooltip = self:Create("TextLabel", {
 		ZIndex = 2,
 		BackgroundTransparency = 1,
@@ -2501,6 +2508,16 @@ function library:Init()
 	self:AddConnection(inputService.InputChanged, function(input)
 		if self.open then
 			if input.UserInputType.Name == "MouseMovement" then
+				if self.cursor then
+					local mouse = inputService:GetMouseLocation()
+					local MousePos = Vector2.new(mouse.X, mouse.Y)
+					self.cursor.PointA = MousePos
+					self.cursor.PointB = MousePos + Vector2.new(12, 12)
+					self.cursor.PointC = MousePos + Vector2.new(12, 12)
+					self.cursor1.PointA = MousePos
+					self.cursor1.PointB = MousePos + Vector2.new(11, 11)
+					self.cursor1.PointC = MousePos + Vector2.new(11, 11)
+				end
 				if self.slider then
 					self.slider:SetValue(self.slider.min + ((input.Position.X - self.slider.slider.AbsolutePosition.X) / self.slider.slider.AbsoluteSize.X) * (self.slider.max - self.slider.min))
 				end
@@ -2545,10 +2562,3 @@ function library:Init()
 		end)
 	end
 end
-
-return library
-
---[[ [Init] --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-library:Init();
-library:selectTab(library.tabs[1]);
-]]
