@@ -2506,7 +2506,6 @@ function library:Init()
 			end
 		end
 	end)
-	setreadonly(Meta, true)
 	if not getgenv().silent then
 		delay(1, function()
 			self:Close()
