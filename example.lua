@@ -17,7 +17,7 @@ local library = {
 	tabs = {},
 	draggable = true,
 	flags = {},
-	title = "stizzardhook",
+	title = "aim.ware",
 	open = false,
 	mousestate = inputService.MouseIconEnabled,
 	popup = nil,
@@ -27,7 +27,7 @@ local library = {
 	notifications = {},
 	tabSize = 0,
 	theme = {},
-	foldername = "stizzardhook",
+	foldername = "aimware",
 	fileext = ".ch"
 }
 
@@ -79,7 +79,7 @@ function library:Create(class, properties)
 	if not class then
 		return
 	end
-	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle" or class == "Triangle" or class == "Image"
+	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle" or class == "Triangle"
 	local t = a and Drawing or Instance
 	local inst = t.new(class)
 	for property, value in next, properties do
