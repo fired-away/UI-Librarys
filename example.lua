@@ -79,7 +79,7 @@ function library:Create(class, properties)
 	if not class then
 		return
 	end
-	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle" or class == "Triangle"
+	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle"
 	local t = a and Drawing or Instance
 	local inst = t.new(class)
 	for property, value in next, properties do
