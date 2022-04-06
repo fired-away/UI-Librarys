@@ -79,7 +79,7 @@ function library:Create(class, properties)
 	if not class then
 		return
 	end
-	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle"
+	local a = class == "Square" or class == "Line" or class == "Text" or class == "Quad" or class == "Circle" or class == "Triangle"
 	local t = a and Drawing or Instance
 	local inst = t.new(class)
 	for property, value in next, properties do
@@ -104,6 +104,7 @@ function library:AddConnection(connection, name, callback)
 end
 
 function library:Unload()
+	inputService.MouseIconEnabled = self.mousestate
 	for _, c in next, self.connections do
 		c:Disconnect()
 	end
@@ -2308,11 +2309,6 @@ end
 
 function library:Close()
 	self.open = not self.open
-	if self.open then
-		inputService.MouseIconEnabled = false
-	else
-		inputService.MouseIconEnabled = self.mousestate
-	end
 	if self.main then
 		if self.popup then
 			self.popup:Close()
@@ -2509,32 +2505,6 @@ function library:Init()
 				dragObject:TweenPosition(UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, yPos), "Out", "Quint", 0.1, true)
 			end
 		end
-	end)
-
-	local Meta = getrawmetatable(game)
-	local Old_index = Meta.__index
-	local Old_new = Meta.__newindex
-	setreadonly(Meta, false)
-	Meta.__index = newcclosure(function(t, i)
-		if checkcaller() then
-			return Old_index(t, i)
-		end
-		if library and i == "MouseIconEnabled" then
-			return library.mousestate
-		end
-		return Old_index(t, i)
-	end)
-	Meta.__newindex = newcclosure(function(t, i, v)
-		if checkcaller() then
-			return Old_new(t, i, v)
-		end
-		if library and i == "MouseIconEnabled" then
-			library.mousestate = v
-			if library.open then
-				return
-			end
-		end
-		return Old_new(t, i, v)
 	end)
 	setreadonly(Meta, true)
 	if not getgenv().silent then
