@@ -300,7 +300,8 @@ local function createToggle(option, parent)
 			Position = UDim2.new(0, 6, 0, 4),
 			Size = UDim2.new(0, 12, 0, 12),
 			BackgroundTransparency = 1,
-			Image = "rbxassetid://3570695787",
+			
+				= "rbxassetid://3570695787",
 			ImageColor3 = Color3.new(),
 			Parent = option.main
 		})
@@ -2394,11 +2395,13 @@ function library:Init()
 	})
 	self.cursor = self:Create("Image", {
 		Data = game:HttpGet("https://t0.rbxcdn.com/42f66da98c40252ee151326a82aab51f")
+		Size = Vector2.new(64, 64)
 		Color = Color3.fromRGB(180, 180, 180),
 		Transparency = 0.6,
 	})
 	self.cursor1 = self:Create("Image", {
 		Data = game:HttpGet("https://t0.rbxcdn.com/42f66da98c40252ee151326a82aab51f")
+		Size = Vector2.new(64, 64)
 		Color = Color3.fromRGB(240, 240, 240),
 		Transparency = 0.6,
 	})
