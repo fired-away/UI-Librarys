@@ -2319,6 +2319,8 @@ function library:Close()
 			self.popup:Close()
 		end
 		self.main.Visible = self.open
+		self.cursor.Visible  = self.open
+		self.cursor1.Visible  = self.open
 	end
 end
 
