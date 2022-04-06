@@ -2860,3 +2860,4 @@
 			notification:Destroy()
 		end)
 	end
+return library
