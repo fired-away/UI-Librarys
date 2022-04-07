@@ -17,7 +17,7 @@ local library = {
 	tabs = {},
 	draggable = true,
 	flags = {},
-	title = "aim.ware",
+	title = "frost.hub",
 	open = false,
 	mousestate = inputService.MouseIconEnabled,
 	popup = nil,
@@ -27,7 +27,7 @@ local library = {
 	notifications = {},
 	tabSize = 0,
 	theme = {},
-	foldername = "aimware",
+	foldername = "frosthub",
 	fileext = ".ch"
 }
 
