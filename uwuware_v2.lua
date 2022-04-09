@@ -17,7 +17,7 @@ local library = {
 	tabs = {},
 	draggable = true,
 	flags = {},
-	title = "frost.hub",
+	title = "Omega Hub",
 	open = false,
 	mousestate = inputService.MouseIconEnabled,
 	popup = nil,
@@ -27,7 +27,7 @@ local library = {
 	notifications = {},
 	tabSize = 0,
 	theme = {},
-	foldername = "frosthub",
+	foldername = "omegahub",
 	fileext = ".ch"
 }
 
