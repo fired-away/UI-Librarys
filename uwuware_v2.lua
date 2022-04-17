@@ -136,29 +136,29 @@ function library:LoadConfig(config)
 		Config = Read and Config or {}
 		for _, option in next, self.options do
 			if option.hasInit then
-				if option.type ~= "button" and option.Flag and not option.skipFlag then
+				if option.type ~= "button" and option.flag and not option.skipflag then
 					if option.type == "toggle" then
 						spawn(function()
-							option:SetState(Config[option.Flag] == 1)
+							option:SetState(Config[option.flag] == 1)
 						end)
 					elseif option.type == "color" then
-						if Config[option.Flag] then
+						if Config[option.flag] then
 							spawn(function()
-								option:SetColor(Config[option.Flag])
+								option:SetColor(Config[option.flag])
 							end)
 							if option.trans then
 								spawn(function()
-									option:SetTrans(Config[option.Flag .. " Transparency"])
+									option:SetTrans(Config[option.flag .. " Transparency"])
 								end)
 							end
 						end
 					elseif option.type == "bind" then
 						spawn(function()
-							option:SetKey(Config[option.Flag])
+							option:SetKey(Config[option.flag])
 						end)
 					else
 						spawn(function()
-							option:SetValue(Config[option.Flag])
+							option:SetValue(Config[option.flag])
 						end)
 					end
 				end
@@ -173,24 +173,24 @@ function library:SaveConfig(config)
 		Config = game:GetService"HttpService":JSONDecode(readfile(self.foldername .. "/" .. config .. self.fileext))
 	end
 	for _, option in next, self.options do
-		if option.type ~= "button" and option.Flag and not option.skipFlag then
+		if option.type ~= "button" and option.flag and not option.skipflag then
 			if option.type == "toggle" then
-				Config[option.Flag] = option.state and 1 or 0
+				Config[option.flag] = option.state and 1 or 0
 			elseif option.type == "color" then
-				Config[option.Flag] = {
+				Config[option.flag] = {
 					option.color.r,
 					option.color.g,
 					option.color.b
 				}
 				if option.trans then
-					Config[option.Flag .. " Transparency"] = option.trans
+					Config[option.flag .. " Transparency"] = option.trans
 				end
 			elseif option.type == "bind" then
-				Config[option.Flag] = option.key
+				Config[option.flag] = option.key
 			elseif option.type == "list" then
-				Config[option.Flag] = option.value
+				Config[option.flag] = option.value
 			else
-				Config[option.Flag] = option.value
+				Config[option.flag] = option.value
 			end
 		end
 	end
@@ -439,7 +439,7 @@ local function createToggle(option, parent)
 	function option:SetState(state, nocallback)
 		state = typeof(state) == "boolean" and state
 		state = state or false
-		library.Flags[self.Flag] = state
+		library.Flags[self.flag] = state
 		self.state = state
 		option.title.TextColor3 = state and Color3.fromRGB(210, 210, 210) or Color3.fromRGB(160, 160, 160)
 		if option.style then
@@ -518,7 +518,7 @@ local function createButton(option, parent)
 		if input.UserInputType.Name == "MouseButton1" then
 			option.callback()
 			if library then
-				library.Flags[option.Flag] = true
+				library.Flags[option.flag] = true
 			end
 			if option.tip then
 				library.tooltip.Text = option.tip
@@ -610,10 +610,10 @@ local function createBind(option, parent)
 		else
 			if (input.KeyCode.Name == option.key or input.UserInputType.Name == option.key) and not binding then
 				if option.mode == "toggle" then
-					library.Flags[option.Flag] = not library.Flags[option.Flag]
-					option.callback(library.Flags[option.Flag], 0)
+					library.Flags[option.flag] = not library.Flags[option.flag]
+					option.callback(library.Flags[option.flag], 0)
 				else
-					library.Flags[option.Flag] = true
+					library.Flags[option.flag] = true
 					if Loop then
 						Loop:Disconnect()
 						option.callback(true, 0)
@@ -632,7 +632,7 @@ local function createBind(option, parent)
 			if input.KeyCode.Name == option.key or input.UserInputType.Name == option.key then
 				if Loop then
 					Loop:Disconnect()
-					library.Flags[option.Flag] = false
+					library.Flags[option.flag] = false
 					option.callback(true, 0)
 				end
 			end
@@ -644,7 +644,7 @@ local function createBind(option, parent)
 		bindinput.TextColor3 = Color3.fromRGB(160, 160, 160)
 		if Loop then
 			Loop:Disconnect()
-			library.Flags[option.Flag] = false
+			library.Flags[option.flag] = false
 			option.callback(true, 0)
 		end
 		self.key = (key and key.Name) or key or self.key
@@ -811,7 +811,7 @@ local function createSlider(option, parent)
 			option.fill:TweenPosition(UDim2.new((0 - self.min) / (self.max - self.min), 0, 0, 0), "Out", "Quad", 0.05, true)
 			option.fill:TweenSize(UDim2.new(value / (self.max - self.min), 0, 1, 0), "Out", "Quad", 0.1, true)
 		end
-		library.Flags[self.Flag] = value
+		library.Flags[self.flag] = value
 		self.value = value
 		option.title.Text = (option.text == "nil" and "" or option.text .. ": ") .. option.value .. option.suffix
 		if not nocallback then
@@ -1102,7 +1102,7 @@ local function createList(option, parent)
 			end
 		end
 		self.value = typeof(value) == "table" and value or tostring(table.find(self.values, value) and value or self.values[1])
-		library.Flags[self.Flag] = self.value
+		library.Flags[self.flag] = self.value
 		option.listvalue.Text = " " .. (self.multiselect and getMultiText() or self.value)
 		if self.multiselect then
 			for name, label in next, self.labels do
@@ -1255,7 +1255,7 @@ local function createBox(option, parent)
 		if tostring(value) == "" then
 			inputvalue.Text = self.value
 		else
-			library.Flags[self.Flag] = tostring(value)
+			library.Flags[self.flag] = tostring(value)
 			self.value = tostring(value)
 			inputvalue.Text = self.value
 			self.callback(value, enter)
@@ -1572,7 +1572,7 @@ local function createColor(option, parent)
 			self:updateVisuals(newColor)
 		end
 		option.visualize.BackgroundColor3 = newColor
-		library.Flags[self.Flag] = newColor
+		library.Flags[self.flag] = newColor
 		self.color = newColor
 		if not nocallback then
 			self.callback(newColor)
@@ -1585,7 +1585,7 @@ local function createColor(option, parent)
 				self.transSlider.Position = UDim2.new(0, 0, value, 0)
 			end
 			self.trans = value
-			library.Flags[self.Flag .. " Transparency"] = 1 - value
+			library.Flags[self.flag .. " Transparency"] = 1 - value
 			self.calltrans(value)
 		end
 		option:SetTrans(option.trans)
@@ -1673,14 +1673,14 @@ function library:AddTab(title, pos)
 				end
 				option.type = "toggle"
 				option.position = #self.options
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
 				option.style = option.style == 2
-				library.Flags[option.Flag] = option.state
+				library.Flags[option.flag] = option.state
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 
 				function option:AddColor(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
@@ -1739,12 +1739,12 @@ function library:AddTab(title, pos)
 				end
 				option.type = "button"
 				option.position = #self.options
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 
 				function option:AddBind(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
@@ -1788,11 +1788,11 @@ function library:AddTab(title, pos)
 				end
 				option.type = "bind"
 				option.position = #self.options
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 				if library.hasInit and self.hasInit then
 					createBind(option, self.content)
 				else
@@ -1815,13 +1815,13 @@ function library:AddTab(title, pos)
 				option.textpos = option.textpos == 2
 				option.type = "slider"
 				option.position = #self.options
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.Flags[option.Flag] = option.value
+				library.Flags[option.flag] = option.value
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 				function option:AddColor(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
 					subOption.sub = true
@@ -1870,13 +1870,13 @@ function library:AddTab(title, pos)
 				option.type = "list"
 				option.position = #self.options
 				option.labels = {}
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.Flags[option.Flag] = option.value
+				library.Flags[option.flag] = option.value
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 
 				function option:AddValue(value, state)
 					if self.multiselect then
@@ -1924,12 +1924,12 @@ function library:AddTab(title, pos)
 				end
 				option.type = "box"
 				option.position = #self.options
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.Flags[option.Flag] = option.value
+				library.Flags[option.flag] = option.value
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 				if library.hasInit and self.hasInit then
 					createBox(option, self.content)
 				else
@@ -1952,12 +1952,12 @@ function library:AddTab(title, pos)
 				option.subcount = 1
 				option.type = "color"
 				option.position = #self.options
-				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
+				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.Flags[option.Flag] = option.color
+				library.Flags[option.flag] = option.color
 				table.insert(self.options, option)
-				library.options[option.Flag] = option
+				library.options[option.flag] = option
 				function option:AddColor(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
 					subOption.sub = true
@@ -1969,7 +1969,7 @@ function library:AddTab(title, pos)
 					return section:AddColor(subOption)
 				end
 				if option.trans then
-					library.Flags[option.Flag .. " Transparency"] = option.trans
+					library.Flags[option.flag .. " Transparency"] = option.trans
 				end
 				if library.hasInit and self.hasInit then
 					createColor(option, self.content)
