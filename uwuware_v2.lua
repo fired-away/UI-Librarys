@@ -27,8 +27,8 @@ local library = {
 	notifications = {},
 	tabSize = 0,
 	theme = {},
-	foldername = "omegahub",
-	fileext = ".ch"
+	foldername = "OmegaHub",
+	fileext = ".oh"
 }
 
 getgenv().library = library
