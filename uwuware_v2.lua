@@ -16,7 +16,7 @@ end
 local library = {
 	tabs = {},
 	draggable = true,
-	flags = {},
+	Flags = {},
 	title = "Omega Hub",
 	open = false,
 	mousestate = inputService.MouseIconEnabled,
@@ -136,29 +136,29 @@ function library:LoadConfig(config)
 		Config = Read and Config or {}
 		for _, option in next, self.options do
 			if option.hasInit then
-				if option.type ~= "button" and option.flag and not option.skipflag then
+				if option.type ~= "button" and option.Flag and not option.skipFlag then
 					if option.type == "toggle" then
 						spawn(function()
-							option:SetState(Config[option.flag] == 1)
+							option:SetState(Config[option.Flag] == 1)
 						end)
 					elseif option.type == "color" then
-						if Config[option.flag] then
+						if Config[option.Flag] then
 							spawn(function()
-								option:SetColor(Config[option.flag])
+								option:SetColor(Config[option.Flag])
 							end)
 							if option.trans then
 								spawn(function()
-									option:SetTrans(Config[option.flag .. " Transparency"])
+									option:SetTrans(Config[option.Flag .. " Transparency"])
 								end)
 							end
 						end
 					elseif option.type == "bind" then
 						spawn(function()
-							option:SetKey(Config[option.flag])
+							option:SetKey(Config[option.Flag])
 						end)
 					else
 						spawn(function()
-							option:SetValue(Config[option.flag])
+							option:SetValue(Config[option.Flag])
 						end)
 					end
 				end
@@ -173,24 +173,24 @@ function library:SaveConfig(config)
 		Config = game:GetService"HttpService":JSONDecode(readfile(self.foldername .. "/" .. config .. self.fileext))
 	end
 	for _, option in next, self.options do
-		if option.type ~= "button" and option.flag and not option.skipflag then
+		if option.type ~= "button" and option.Flag and not option.skipFlag then
 			if option.type == "toggle" then
-				Config[option.flag] = option.state and 1 or 0
+				Config[option.Flag] = option.state and 1 or 0
 			elseif option.type == "color" then
-				Config[option.flag] = {
+				Config[option.Flag] = {
 					option.color.r,
 					option.color.g,
 					option.color.b
 				}
 				if option.trans then
-					Config[option.flag .. " Transparency"] = option.trans
+					Config[option.Flag .. " Transparency"] = option.trans
 				end
 			elseif option.type == "bind" then
-				Config[option.flag] = option.key
+				Config[option.Flag] = option.key
 			elseif option.type == "list" then
-				Config[option.flag] = option.value
+				Config[option.Flag] = option.value
 			else
-				Config[option.flag] = option.value
+				Config[option.Flag] = option.value
 			end
 		end
 	end
@@ -328,7 +328,7 @@ local function createToggle(option, parent)
 			Size = UDim2.new(1, -6, 1, -6),
 			BackgroundTransparency = 1,
 			Image = "rbxassetid://3570695787",
-			ImageColor3 = library.flags["Menu Accent Color"],
+			ImageColor3 = library.Flags["Menu Accent Color"],
 			Visible = option.state,
 			Parent = tickbox
 		})
@@ -346,7 +346,7 @@ local function createToggle(option, parent)
 		tickbox = library:Create("Frame", {
 			Position = UDim2.new(0, 6, 0, 4),
 			Size = UDim2.new(0, 12, 0, 12),
-			BackgroundColor3 = library.flags["Menu Accent Color"],
+			BackgroundColor3 = library.Flags["Menu Accent Color"],
 			BorderColor3 = Color3.new(),
 			Parent = option.main
 		})
@@ -405,10 +405,10 @@ local function createToggle(option, parent)
 		if input.UserInputType.Name == "MouseMovement" then
 			if not library.warning and not library.slider then
 				if option.style then
-					tickbox.ImageColor3 = library.flags["Menu Accent Color"]
+					tickbox.ImageColor3 = library.Flags["Menu Accent Color"]
 				else
-					tickbox.BorderColor3 = library.flags["Menu Accent Color"]
-					tickboxOverlay.BorderColor3 = library.flags["Menu Accent Color"]
+					tickbox.BorderColor3 = library.Flags["Menu Accent Color"]
+					tickboxOverlay.BorderColor3 = library.Flags["Menu Accent Color"]
 				end
 			end
 			if option.tip then
@@ -439,7 +439,7 @@ local function createToggle(option, parent)
 	function option:SetState(state, nocallback)
 		state = typeof(state) == "boolean" and state
 		state = state or false
-		library.flags[self.flag] = state
+		library.Flags[self.Flag] = state
 		self.state = state
 		option.title.TextColor3 = state and Color3.fromRGB(210, 210, 210) or Color3.fromRGB(160, 160, 160)
 		if option.style then
@@ -518,7 +518,7 @@ local function createButton(option, parent)
 		if input.UserInputType.Name == "MouseButton1" then
 			option.callback()
 			if library then
-				library.flags[option.flag] = true
+				library.Flags[option.Flag] = true
 			end
 			if option.tip then
 				library.tooltip.Text = option.tip
@@ -527,7 +527,7 @@ local function createButton(option, parent)
 		end
 		if input.UserInputType.Name == "MouseMovement" then
 			if not library.warning and not library.slider then
-				option.title.BorderColor3 = library.flags["Menu Accent Color"]
+				option.title.BorderColor3 = library.Flags["Menu Accent Color"]
 			end
 		end
 	end)
@@ -596,7 +596,7 @@ local function createBind(option, parent)
 			binding = true
 			bindinput.Text = "[...]"
 			bindinput.Size = UDim2.new(0, -textService:GetTextSize(bindinput.Text, 16, Enum.Font.Code, Vector2.new(9e9, 9e9)).X, 0, 16)
-			bindinput.TextColor3 = library.flags["Menu Accent Color"]
+			bindinput.TextColor3 = library.Flags["Menu Accent Color"]
 		end
 	end)
 
@@ -610,10 +610,10 @@ local function createBind(option, parent)
 		else
 			if (input.KeyCode.Name == option.key or input.UserInputType.Name == option.key) and not binding then
 				if option.mode == "toggle" then
-					library.flags[option.flag] = not library.flags[option.flag]
-					option.callback(library.flags[option.flag], 0)
+					library.Flags[option.Flag] = not library.Flags[option.Flag]
+					option.callback(library.Flags[option.Flag], 0)
 				else
-					library.flags[option.flag] = true
+					library.Flags[option.Flag] = true
 					if Loop then
 						Loop:Disconnect()
 						option.callback(true, 0)
@@ -632,7 +632,7 @@ local function createBind(option, parent)
 			if input.KeyCode.Name == option.key or input.UserInputType.Name == option.key then
 				if Loop then
 					Loop:Disconnect()
-					library.flags[option.flag] = false
+					library.Flags[option.Flag] = false
 					option.callback(true, 0)
 				end
 			end
@@ -644,7 +644,7 @@ local function createBind(option, parent)
 		bindinput.TextColor3 = Color3.fromRGB(160, 160, 160)
 		if Loop then
 			Loop:Disconnect()
-			library.flags[option.flag] = false
+			library.Flags[option.Flag] = false
 			option.callback(true, 0)
 		end
 		self.key = (key and key.Name) or key or self.key
@@ -694,7 +694,7 @@ local function createSlider(option, parent)
 		Parent = option.slider
 	})
 	option.fill = library:Create("Frame", {
-		BackgroundColor3 = library.flags["Menu Accent Color"],
+		BackgroundColor3 = library.Flags["Menu Accent Color"],
 		BorderSizePixel = 0,
 		Parent = option.slider
 	})
@@ -769,13 +769,13 @@ local function createSlider(option, parent)
 				option.title:CaptureFocus()
 			else
 				library.slider = option
-				option.slider.BorderColor3 = library.flags["Menu Accent Color"]
+				option.slider.BorderColor3 = library.Flags["Menu Accent Color"]
 				option:SetValue(option.min + ((input.Position.X - option.slider.AbsolutePosition.X) / option.slider.AbsoluteSize.X) * (option.max - option.min))
 			end
 		end
 		if input.UserInputType.Name == "MouseMovement" then
 			if not library.warning and not library.slider then
-				option.slider.BorderColor3 = library.flags["Menu Accent Color"]
+				option.slider.BorderColor3 = library.Flags["Menu Accent Color"]
 			end
 			if option.tip then
 				library.tooltip.Text = option.tip
@@ -811,7 +811,7 @@ local function createSlider(option, parent)
 			option.fill:TweenPosition(UDim2.new((0 - self.min) / (self.max - self.min), 0, 0, 0), "Out", "Quad", 0.05, true)
 			option.fill:TweenSize(UDim2.new(value / (self.max - self.min), 0, 1, 0), "Out", "Quad", 0.1, true)
 		end
-		library.flags[self.flag] = value
+		library.Flags[self.Flag] = value
 		self.value = value
 		option.title.Text = (option.text == "nil" and "" or option.text .. ": ") .. option.value .. option.suffix
 		if not nocallback then
@@ -983,11 +983,11 @@ local function createList(option, parent)
 			local pos = option.main.AbsolutePosition
 			option.holder.Position = UDim2.new(0, pos.X + 6, 0, pos.Y + ((option.text == "nil" and not option.sub) and 66 or 84))
 			library.popup = option
-			option.listvalue.BorderColor3 = library.flags["Menu Accent Color"]
+			option.listvalue.BorderColor3 = library.Flags["Menu Accent Color"]
 		end
 		if input.UserInputType.Name == "MouseMovement" then
 			if not library.warning and not library.slider then
-				option.listvalue.BorderColor3 = library.flags["Menu Accent Color"]
+				option.listvalue.BorderColor3 = library.Flags["Menu Accent Color"]
 			end
 		end
 	end)
@@ -1052,7 +1052,7 @@ local function createList(option, parent)
 			Text = " " .. value,
 			TextSize = 15,
 			Font = Enum.Font.Code,
-			TextColor3 = library.flags["Menu Accent Color"],
+			TextColor3 = library.Flags["Menu Accent Color"],
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Visible = self.multiselect and self.value[value] or self.value == value,
 			Parent = label
@@ -1102,7 +1102,7 @@ local function createList(option, parent)
 			end
 		end
 		self.value = typeof(value) == "table" and value or tostring(table.find(self.values, value) and value or self.values[1])
-		library.flags[self.flag] = self.value
+		library.Flags[self.Flag] = self.value
 		option.listvalue.Text = " " .. (self.multiselect and getMultiText() or self.value)
 		if self.multiselect then
 			for name, label in next, self.labels do
@@ -1219,7 +1219,7 @@ local function createBox(option, parent)
 		option:SetValue(inputvalue.Text, enter)
 	end)
 	inputvalue.Focused:connect(function()
-		option.holder.BorderColor3 = library.flags["Menu Accent Color"]
+		option.holder.BorderColor3 = library.Flags["Menu Accent Color"]
 	end)
 	inputvalue.InputBegan:connect(function(input)
 		if input.UserInputType.Name == "MouseButton1" then
@@ -1227,7 +1227,7 @@ local function createBox(option, parent)
 		end
 		if input.UserInputType.Name == "MouseMovement" then
 			if not library.warning and not library.slider then
-				option.holder.BorderColor3 = library.flags["Menu Accent Color"]
+				option.holder.BorderColor3 = library.Flags["Menu Accent Color"]
 			end
 			if option.tip then
 				library.tooltip.Text = option.tip
@@ -1255,7 +1255,7 @@ local function createBox(option, parent)
 		if tostring(value) == "" then
 			inputvalue.Text = self.value
 		else
-			library.flags[self.flag] = tostring(value)
+			library.Flags[self.Flag] = tostring(value)
 			self.value = tostring(value)
 			inputvalue.Text = self.value
 			self.callback(value, enter)
@@ -1536,11 +1536,11 @@ local function createColor(option, parent)
 			option.mainHolder.Position = UDim2.new(0, pos.X + 36 + (option.trans and -16 or 0), 0, pos.Y + 56)
 			option.mainHolder.Visible = true
 			library.popup = option
-			option.visualize.BorderColor3 = library.flags["Menu Accent Color"]
+			option.visualize.BorderColor3 = library.Flags["Menu Accent Color"]
 		end
 		if input.UserInputType.Name == "MouseMovement" then
 			if not library.warning and not library.slider then
-				option.visualize.BorderColor3 = library.flags["Menu Accent Color"]
+				option.visualize.BorderColor3 = library.Flags["Menu Accent Color"]
 			end
 			if option.tip then
 				library.tooltip.Text = option.tip
@@ -1572,7 +1572,7 @@ local function createColor(option, parent)
 			self:updateVisuals(newColor)
 		end
 		option.visualize.BackgroundColor3 = newColor
-		library.flags[self.flag] = newColor
+		library.Flags[self.Flag] = newColor
 		self.color = newColor
 		if not nocallback then
 			self.callback(newColor)
@@ -1585,7 +1585,7 @@ local function createColor(option, parent)
 				self.transSlider.Position = UDim2.new(0, 0, value, 0)
 			end
 			self.trans = value
-			library.flags[self.flag .. " Transparency"] = 1 - value
+			library.Flags[self.Flag .. " Transparency"] = 1 - value
 			self.calltrans(value)
 		end
 		option:SetTrans(option.trans)
@@ -1595,7 +1595,7 @@ local function createColor(option, parent)
 			option:SetColor(option.color)
 		end
 	end)
-    
+
 	function option:Close()
 		library.popup = nil
 		self.open = false
@@ -1629,7 +1629,7 @@ function library:AddTab(title, pos)
 				column = self
 			}
 			table.insert(self.sections, section)
-        
+
 			function section:AddLabel(text)
 				local option = {
 					text = text
@@ -1673,14 +1673,14 @@ function library:AddTab(title, pos)
 				end
 				option.type = "toggle"
 				option.position = #self.options
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
 				option.style = option.style == 2
-				library.flags[option.flag] = option.state
+				library.Flags[option.Flag] = option.state
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 
 				function option:AddColor(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
@@ -1739,12 +1739,12 @@ function library:AddTab(title, pos)
 				end
 				option.type = "button"
 				option.position = #self.options
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 
 				function option:AddBind(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
@@ -1788,11 +1788,11 @@ function library:AddTab(title, pos)
 				end
 				option.type = "bind"
 				option.position = #self.options
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 				if library.hasInit and self.hasInit then
 					createBind(option, self.content)
 				else
@@ -1815,13 +1815,13 @@ function library:AddTab(title, pos)
 				option.textpos = option.textpos == 2
 				option.type = "slider"
 				option.position = #self.options
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.flags[option.flag] = option.value
+				library.Flags[option.Flag] = option.value
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 				function option:AddColor(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
 					subOption.sub = true
@@ -1870,13 +1870,13 @@ function library:AddTab(title, pos)
 				option.type = "list"
 				option.position = #self.options
 				option.labels = {}
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.subcount = 0
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.flags[option.flag] = option.value
+				library.Flags[option.Flag] = option.value
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 
 				function option:AddValue(value, state)
 					if self.multiselect then
@@ -1924,12 +1924,12 @@ function library:AddTab(title, pos)
 				end
 				option.type = "box"
 				option.position = #self.options
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.flags[option.flag] = option.value
+				library.Flags[option.Flag] = option.value
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 				if library.hasInit and self.hasInit then
 					createBox(option, self.content)
 				else
@@ -1952,12 +1952,12 @@ function library:AddTab(title, pos)
 				option.subcount = 1
 				option.type = "color"
 				option.position = #self.options
-				option.flag = (library.flagprefix and library.flagprefix .. " " or "") .. (option.flag or option.text)
+				option.Flag = (library.Flagprefix and library.Flagprefix .. " " or "") .. (option.Flag or option.text)
 				option.canInit = (option.canInit ~= nil and option.canInit) or true
 				option.tip = option.tip and tostring(option.tip)
-				library.flags[option.flag] = option.color
+				library.Flags[option.Flag] = option.color
 				table.insert(self.options, option)
-				library.options[option.flag] = option
+				library.options[option.Flag] = option
 				function option:AddColor(subOption)
 					subOption = typeof(subOption) == "table" and subOption or {}
 					subOption.sub = true
@@ -1969,7 +1969,7 @@ function library:AddTab(title, pos)
 					return section:AddColor(subOption)
 				end
 				if option.trans then
-					library.flags[option.flag .. " Transparency"] = option.trans
+					library.Flags[option.Flag .. " Transparency"] = option.trans
 				end
 				if library.hasInit and self.hasInit then
 					createColor(option, self.content)
@@ -2016,7 +2016,7 @@ function library:AddTab(title, pos)
 				})
 				table.insert(library.theme, library:Create("Frame", {
 					Size = UDim2.new(1, 0, 0, 1),
-					BackgroundColor3 = library.flags["Menu Accent Color"],
+					BackgroundColor3 = library.Flags["Menu Accent Color"],
 					BorderSizePixel = 0,
 					BorderMode = Enum.BorderMode.Inset,
 					Parent = self.main
@@ -2362,7 +2362,7 @@ function library:Init()
 	table.insert(library.theme, self:Create("Frame", {
 		Size = UDim2.new(1, 0, 0, 1),
 		Position = UDim2.new(0, 0, 0, 24),
-		BackgroundColor3 = library.flags["Menu Accent Color"],
+		BackgroundColor3 = library.Flags["Menu Accent Color"],
 		BorderSizePixel = 0,
 		Parent = self.main
 	}))
@@ -2374,7 +2374,7 @@ function library:Init()
 		Parent = top
 	})
 	self.tabHighlight = self:Create("Frame", {
-		BackgroundColor3 = library.flags["Menu Accent Color"],
+		BackgroundColor3 = library.Flags["Menu Accent Color"],
 		BorderSizePixel = 0,
 		Parent = self.main
 	})
@@ -2457,7 +2457,7 @@ function library:Init()
 		end
 		self.main.Size = UDim2.new(0, 16 + ((#tab.columns < 2 and 2 or #tab.columns) * 239), 0, 600)
 		self.currentTab = tab
-		tab.button.TextColor3 = library.flags["Menu Accent Color"]
+		tab.button.TextColor3 = library.Flags["Menu Accent Color"]
 		self.tabHighlight:TweenPosition(UDim2.new(0, tab.button.Position.X.Offset, 0, 50), "Out", "Quad", 0.2, true)
 		self.tabHighlight:TweenSize(UDim2.new(0, tab.button.AbsoluteSize.X, 0, -1), "Out", "Quad", 0.1, true)
 		for _, column in next, tab.columns do
