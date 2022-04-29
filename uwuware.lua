@@ -1,4 +1,4 @@
-local library = {flags = {}, windows = {}, open = true}
+local library = {Flags = {}, windows = {}, open = true}
 
 --Services
 local runService = game:GetService"RunService"
@@ -290,7 +290,7 @@ function createToggle(option, parent)
     end)
     
     function option:SetState(state)
-        library.flags[self.flag] = state
+        library.Flags[self.flag] = state
         self.state = state
         checkmarkHolder:TweenSize(option.state and UDim2.new(1, -8, 1, -8) or UDim2.new(0, 0, 1, -8), "Out", "Quad", 0.2, true)
         tweenService:Create(tickboxInner, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = state and Color3.fromRGB(255, 65, 65) or Color3.fromRGB(20, 20, 20)}):Play()
@@ -347,7 +347,7 @@ function createButton(option, parent)
     local clicking
     main.InputBegan:connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            library.flags[option.flag] = true
+            library.Flags[option.flag] = true
             clicking = true
             tweenService:Create(round, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageColor3 = Color3.fromRGB(255, 65, 65)}):Play()
             option.callback()
@@ -492,7 +492,7 @@ local function createBind(option, parent)
         end
         self.key = key or self.key
         self.key = self.key.Name or self.key
-        library.flags[self.flag] = self.key
+        library.Flags[self.flag] = self.key
         if string.match(self.key, "Mouse") then
             bindinput.Text = string.sub(self.key, 1, 5) .. string.sub(self.key, 12, 13)
         else
@@ -648,7 +648,7 @@ local function createSlider(option, parent)
             fill:TweenPosition(UDim2.new((0 - self.min) / (self.max - self.min), 0, 0, 0), "Out", "Quad", 0.1, true)
             fill:TweenSize(UDim2.new(value / (self.max - self.min), 0, 1, 0), "Out", "Quad", 0.1, true)
         end
-        library.flags[self.flag] = value
+        library.Flags[self.flag] = value
         self.value = value
         inputvalue.Text = value
         self.callback(value)
@@ -863,7 +863,7 @@ local function createList(option, parent, holder)
     end
     
     function option:SetValue(value)
-        library.flags[self.flag] = tostring(value)
+        library.Flags[self.flag] = tostring(value)
         self.value = tostring(value)
         listvalue.Text = self.value
         self.callback(value)
@@ -984,7 +984,7 @@ local function createBox(option, parent)
     end)
     
     function option:SetValue(value, enter)
-        library.flags[self.flag] = tostring(value)
+        library.Flags[self.flag] = tostring(value)
         self.value = tostring(value)
         inputvalue.Text = self.value
         self.callback(value, enter)
@@ -1423,7 +1423,7 @@ local function createColor(option, parent, holder)
             self:updateVisuals(newColor)
         end
         self.visualize.ImageColor3 = newColor
-        library.flags[self.flag] = newColor
+        library.Flags[self.flag] = newColor
         self.color = newColor
         self.callback(newColor)
     end
@@ -1527,7 +1527,7 @@ local function getFnctions(parent)
         option.type = "toggle"
         option.position = #self.options
         option.flag = option.flag or option.text
-        library.flags[option.flag] = option.state
+        library.Flags[option.flag] = option.state
         table.insert(self.options, option)
         
         return option
@@ -1554,7 +1554,7 @@ local function getFnctions(parent)
         option.type = "bind"
         option.position = #self.options
         option.flag = option.flag or option.text
-        library.flags[option.flag] = option.key
+        library.Flags[option.flag] = option.key
         table.insert(self.options, option)
         
         return option
@@ -1573,7 +1573,7 @@ local function getFnctions(parent)
         option.type = "slider"
         option.position = #self.options
         option.flag = option.flag or option.text
-        library.flags[option.flag] = option.value
+        library.Flags[option.flag] = option.value
         table.insert(self.options, option)
         
         return option
@@ -1589,7 +1589,7 @@ local function getFnctions(parent)
         option.type = "list"
         option.position = #self.options
         option.flag = option.flag or option.text
-        library.flags[option.flag] = option.value
+        library.Flags[option.flag] = option.value
         table.insert(self.options, option)
         
         return option
@@ -1603,7 +1603,7 @@ local function getFnctions(parent)
         option.type = "box"
         option.position = #self.options
         option.flag = option.flag or option.text
-        library.flags[option.flag] = option.value
+        library.Flags[option.flag] = option.value
         table.insert(self.options, option)
         
         return option
@@ -1618,7 +1618,7 @@ local function getFnctions(parent)
         option.type = "color"
         option.position = #self.options
         option.flag = option.flag or option.text
-        library.flags[option.flag] = option.color
+        library.Flags[option.flag] = option.color
         table.insert(self.options, option)
         
         return option
