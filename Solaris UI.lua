@@ -636,8 +636,7 @@ function SolarisLib:New(Config)
     end)
 
     MFrame.TabMenu.Menu.Top.MenuCloseBtn.MouseButton1Click:Connect(function()
-        Solaris:Destroy()
-        getgenv().Destroyed = true
+        CloseTabMenu()
     end)
 
     MFrame.TopBar.ButtonHolder.SearchBtn.MouseButton1Click:Connect(function()
@@ -656,8 +655,8 @@ function SolarisLib:New(Config)
     MFrame.TopBar.ButtonHolder.MenuBtn.MouseButton1Click:Connect(function() MFrame.TopBar.ButtonHolder.MenuBtn.MenuFrame.Visible = not MFrame.TopBar.ButtonHolder.MenuBtn.MenuFrame.Visible end)
 
     MFrame.TopBar.ButtonHolder.CloseBtn.MouseButton1Click:Connect(function()
-        uitoggled = not uitoggled
-        MainUI.Visible = uitoggled
+        Solaris:Destroy()
+        getgenv().Destroyed = true
     end)
 
 
