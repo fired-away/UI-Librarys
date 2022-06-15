@@ -17,7 +17,7 @@ local library = {
 	tabs = {},
 	draggable = true,
 	Flags = {},
-	title = "Omega Hub",
+	title = "Fire Hub",
 	open = false,
 	mousestate = inputService.MouseIconEnabled,
 	popup = nil,
@@ -27,8 +27,8 @@ local library = {
 	notifications = {},
 	tabSize = 0,
 	theme = {},
-	foldername = "OmegaHub",
-	fileext = ".oh"
+	foldername = "FireHub",
+	fileext = ".fh"
 }
 
 getgenv().library = library
